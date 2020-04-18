@@ -19,5 +19,24 @@ namespace :db do
     result = Event.select(:name).distinct.map { |x| x.name }
     puts(result)
     puts("EOQ") # End Of Query -- always add this line after a query.
+    puts("")
+    puts("Query 1:")
+    result1 = Customer.joins(:orders).where(id: 1).count
+    puts(result1)
+    puts("EOQ") # End Of Query -- always add this line after a query.
+    puts("")
+    puts("Query 2:")
+    result2 =  Order.joins(tickets: :ticket_type).where(customer_id: 2).group(:event_id).count.count
+    puts(result2)
+    puts("EOQ") # End Of Query -- always add this line after a query.
+    puts("")
+    puts("Query 3:")
+    result3 =  Event.joins(ticket_types: [{tickets: :order}]).where(orders: {customer_id: 2}).distinct.pluck(:name)
+    puts(result3)
+    puts("EOQ") # End Of Query -- always add this line after a query.
+
   end
+
+
+
 end
